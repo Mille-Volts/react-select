@@ -66,6 +66,12 @@ export default class Async extends Component {
 		}
 	}
 
+	componentWillReceiveProps (nextProps) {
+		if (nextProps.autoload && nextProps.value !== this.props.value) {
+			this.loadOptions(this.inputValue());
+		}
+	}
+
 	componentWillUpdate (nextProps, nextState) {
 		const propertiesToSync = ['options'];
 		propertiesToSync.forEach((prop) => {
