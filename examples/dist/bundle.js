@@ -93,6 +93,13 @@ var Async = (function (_Component) {
 			}
 		}
 	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			if (nextProps.autoload && nextProps.value !== this.props.value) {
+				this.loadOptions(this.inputValue());
+			}
+		}
+	}, {
 		key: 'componentWillUpdate',
 		value: function componentWillUpdate(nextProps, nextState) {
 			var _this = this;
