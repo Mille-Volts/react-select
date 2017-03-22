@@ -83,6 +83,10 @@ export default class Async extends Component {
 		});
 	}
 
+	componentWillUnmount () {
+		this._callback = null;
+	}
+
 	clearOptions() {
 		this.setState({ options: [] });
 	}
