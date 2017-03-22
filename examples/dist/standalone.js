@@ -113,6 +113,11 @@ var Async = (function (_Component) {
 			});
 		}
 	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			this._callback = null;
+		}
+	}, {
 		key: 'clearOptions',
 		value: function clearOptions() {
 			this.setState({ options: [] });
