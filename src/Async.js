@@ -42,6 +42,7 @@ const defaultProps = {
 	loadingPlaceholder: 'Loading...',
 	options: [],
 	searchPromptText: 'Type to search',
+	shouldReload: (props, oldProps) => props.autoload && props.value !== oldProps.value,
 };
 
 export default class Async extends Component {
@@ -67,7 +68,7 @@ export default class Async extends Component {
 	}
 
 	componentWillReceiveProps (nextProps) {
-		if (nextProps.autoload && nextProps.value !== this.props.value) {
+		if (nextProps.shouldReload(nextProps, this.props)) {
 			this.loadOptions(this.inputValue());
 		}
 	}
