@@ -63,7 +63,10 @@ var defaultProps = {
 	ignoreCase: true,
 	loadingPlaceholder: 'Loading...',
 	options: [],
-	searchPromptText: 'Type to search'
+	searchPromptText: 'Type to search',
+	shouldReload: function shouldReload(props, oldProps) {
+		return props.autoload && props.value !== oldProps.value;
+	}
 };
 
 var Async = (function (_Component) {
@@ -96,7 +99,7 @@ var Async = (function (_Component) {
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			if (nextProps.autoload && nextProps.value !== this.props.value) {
+			if (nextProps.shouldReload(nextProps, this.props)) {
 				this.loadOptions(this.inputValue());
 			}
 		}
