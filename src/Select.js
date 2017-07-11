@@ -54,6 +54,7 @@ const Select = React.createClass({
 		autosize: React.PropTypes.bool,             // whether to enable autosizing or not
 		backspaceRemoves: React.PropTypes.bool,     // whether backspace removes an item if there is no text input
 		backspaceToRemoveMessage: React.PropTypes.string,  // Message to use for screenreaders to press backspace to remove the current item - {label} is replaced with the item label
+		blurSelectsValue: React.PropTypes.bool,     // whether blur select current focused option. It disables tabSelectsValue.
 		className: React.PropTypes.string,          // className for the outer element
 		clearAllText: stringOrNode,                 // title for the "clear" control when multi: true
 		clearRenderer: React.PropTypes.func,        // create clearable x element
@@ -105,6 +106,7 @@ const Select = React.createClass({
 		resetValue: React.PropTypes.any,            // value to use when you clear the control
 		scrollMenuIntoView: React.PropTypes.bool,   // boolean to enable the viewport to shift so that the full menu fully visible when engaged
 		searchable: React.PropTypes.bool,           // whether to enable searching feature or not
+		selectValueOnBlur: React.PropTypes.func,    // function called on blur if blurSelectsValue is true. By default, it select the focused option. Only Creatable should override this behaviour.
 		simpleValue: React.PropTypes.bool,          // pass the value to onChange as a simple value (legacy pre 1.0 mode), defaults to false
 		style: React.PropTypes.object,              // optional style to apply to the control
 		tabIndex: React.PropTypes.string,           // optional tab index of the control
@@ -457,6 +459,10 @@ const Select = React.createClass({
 			return;
 		}
 
+		if (this.props.blurSelectsValue) {
+			this.props.selectValueOnBlur ? this.props.selectValueOnBlur() : this.selectFocusedOption();
+		}
+
 		if (this.props.onBlur) {
 			this.props.onBlur(event);
 		}
@@ -519,7 +525,7 @@ const Select = React.createClass({
 				}
 			return;
 			case 9: // tab
-				if (event.shiftKey || !this.state.isOpen || !this.props.tabSelectsValue) {
+				if (event.shiftKey || !this.state.isOpen || !this.props.tabSelectsValue || this.props.blurSelectsValue) {
 					return;
 				}
 				this.selectFocusedOption();

@@ -195,6 +195,21 @@ const Creatable = React.createClass({
 		}
 	},
 
+	selectValueOnBlur () {
+		const focusedOption = this.select.getFocusedOption();
+
+		if (
+			focusedOption &&
+			focusedOption === this._createPlaceholderOption
+		) {
+			this.createNewOption();
+		} else if (this.props.selectValueOnBlur) {
+			this.props.selectValueOnBlur();
+		} else {
+			this.select.getFocusedOption();
+		}
+	},
+
 	onOptionSelect (option, event) {
 		if (option === this._createPlaceholderOption) {
 			this.createNewOption();
@@ -226,6 +241,7 @@ const Creatable = React.createClass({
 			menuRenderer: this.menuRenderer,
 			onInputChange: this.onInputChange,
 			onInputKeyDown: this.onInputKeyDown,
+			selectValueOnBlur: this.selectValueOnBlur,
 			ref: (ref) => {
 				this.select = ref;
 
