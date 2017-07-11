@@ -1309,7 +1309,7 @@ var Select = _react2['default'].createClass({
 	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 		var valueArray = this.getValueArray(nextProps.value, nextProps);
 
-		var requireInputValueUpdate = this.props.disabled != nextProps.disabled || this.props.searchable != nextProps.searchable || this.props.multi != nextProps.multi || this.props.value != nextProps.value;
+		var requireInputValueUpdate = !this.state.isFocused && !this.state.isPseudoFocused && (this.props.disabled != nextProps.disabled || this.props.searchable != nextProps.searchable || this.props.multi != nextProps.multi || this.props.value != nextProps.value);
 
 		if (requireInputValueUpdate) {
 			if (nextProps.disabled || !nextProps.searchable) {
