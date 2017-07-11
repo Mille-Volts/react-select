@@ -1712,7 +1712,7 @@ var Select = _react2['default'].createClass({
 	renderValue: function renderValue(valueArray, isOpen) {
 		var _this5 = this;
 
-		if (!this.props.multi && !this.props.disabled && !this.props.searchable && this.state.inputValue) {
+		if (!this.props.multi && !this.props.disabled && !this.props.searchable && !this.state.isFocused && !this.state.isPseudoFocused) {
 			return null;
 		}
 
@@ -1809,7 +1809,7 @@ var Select = _react2['default'].createClass({
 				'aria-owns': isOpen ? this._instancePrefix + '-list' : this._instancePrefix + '-value',
 				'aria-activedescendant': isOpen ? this._instancePrefix + '-option-' + focusedOptionIndex : this._instancePrefix + '-value',
 				className: className,
-				tabIndex: this.props.tabIndex || 0,
+				tabIndex: this.props.disabled ? undefined : this.props.tabIndex || 0,
 				onBlur: this.handleInputBlur,
 				onFocus: this.handleInputFocus,
 				ref: function (ref) {
