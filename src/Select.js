@@ -147,7 +147,7 @@ const Select = React.createClass({
 			multi: false,
 			noResultsText: 'No results found',
 			onBlurResetsInput: true,
-			onCloseResetsInput: true,
+			onCloseResetsInput: false,
 			openAfterFocus: false,
 			optionComponent: Option,
 			pageSize: 5,
@@ -176,6 +176,12 @@ const Select = React.createClass({
 		this._instancePrefix = 'react-select-' + (this.props.instanceId || ++instanceId) + '-';
 		const valueArray = this.getValueArray(this.props.value);
 
+		if (!this.props.multi && !this.props.disabled && this.props.searchable) {
+			this.setState({
+				inputValue: (valueArray && valueArray.length && valueArray[0] ? (this.props.valueRenderer || this.getOptionLabel)(valueArray[0]) || '' : '')
+			})
+		}
+
 		if (this.props.required) {
 			this.setState({
 				required: this.handleRequired(valueArray[0], this.props.multi),
@@ -191,6 +197,25 @@ const Select = React.createClass({
 
 	componentWillReceiveProps (nextProps) {
 		const valueArray = this.getValueArray(nextProps.value, nextProps);
+
+		let requireInputValueUpdate = this.props.disabled != nextProps.disabled
+		 || this.props.searchable != nextProps.searchable
+		 || this.props.multi != nextProps.multi
+		 || this.props.value != nextProps.value;
+
+		if (requireInputValueUpdate) {
+			if (nextProps.disabled || !nextProps.searchable) {
+				this.setState({
+					inputValue: '',
+				})
+			} else if (!nextProps.multi) {
+				this.setState({
+					inputValue: valueArray && valueArray.length
+						? (nextProps.valueRenderer || this.getOptionLabel)(valueArray[0])
+						: ''
+				})
+			}
+		}
 
 		if (nextProps.required) {
 			this.setState({
@@ -435,15 +460,27 @@ const Select = React.createClass({
 		if (this.props.onBlur) {
 			this.props.onBlur(event);
 		}
-		var onBlurredState = {
-			isFocused: false,
-			isOpen: false,
-			isPseudoFocused: false,
-		};
-		if (this.props.onBlurResetsInput) {
-			onBlurredState.inputValue = '';
-		}
-		this.setState(onBlurredState);
+
+		this.setState(state => {
+			let onBlurredState = {
+				isFocused: false,
+				isOpen: false,
+				isPseudoFocused: false,
+			};
+
+			if (this.props.onBlurResetsInput) {
+				if (this.props.multi) {
+					onBlurredState.inputValue = '';
+				} else {
+					let valueArray = this.getValueArray(this.props.value);
+					if ((valueArray && valueArray.length && valueArray[0] ? (this.props.valueRenderer || this.getOptionLabel)(valueArray[0]) || '' : '') !== state.inputValue) {
+						onBlurredState.inputValue = '';
+					}
+				}
+			}
+
+			return onBlurredState;
+		});
 	},
 
 	handleInputChange (event) {
@@ -555,7 +592,7 @@ const Select = React.createClass({
 	},
 
 	getOptionLabel (op) {
-		return op[this.props.labelKey];
+		return op && op[this.props.labelKey];
 	},
 
 	/**
@@ -620,9 +657,10 @@ const Select = React.createClass({
 				this.addValue(value);
 			});
 		} else {
+			let renderLabel = this.props.valueRenderer || this.getOptionLabel;
 			this.setState({
 				isOpen: false,
-				inputValue: '',
+				inputValue: value ? renderLabel(value) || '' : '',
 				isPseudoFocused: this.state.isFocused,
 			}, () => {
 				this.setValue(value);
@@ -795,6 +833,10 @@ const Select = React.createClass({
 	},
 
 	renderValue (valueArray, isOpen) {
+		if (!this.props.multi && !this.props.disabled && !this.props.searchable && this.state.inputValue) {
+			return null;
+		}
+
 		let renderLabel = this.props.valueRenderer || this.getOptionLabel;
 		let ValueComponent = this.props.valueComponent;
 		if (!valueArray.length) {
