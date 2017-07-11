@@ -129,9 +129,6 @@
 .is-focused .Select-input > input {
   cursor: text;
 }
-.has-value.is-pseudo-focused .Select-input {
-  opacity: 0;
-}
 .Select-control:not(.is-searchable) > .Select-input {
   outline: none;
 }
