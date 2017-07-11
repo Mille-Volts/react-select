@@ -200,10 +200,13 @@ const Select = React.createClass({
 	componentWillReceiveProps (nextProps) {
 		const valueArray = this.getValueArray(nextProps.value, nextProps);
 
-		let requireInputValueUpdate = this.props.disabled != nextProps.disabled
-		 || this.props.searchable != nextProps.searchable
-		 || this.props.multi != nextProps.multi
-		 || this.props.value != nextProps.value;
+		let requireInputValueUpdate = !this.state.isFocused && !this.state.isPseudoFocused &&
+			(
+				this.props.disabled != nextProps.disabled
+				|| this.props.searchable != nextProps.searchable
+				|| this.props.multi != nextProps.multi
+				|| this.props.value != nextProps.value
+			);
 
 		if (requireInputValueUpdate) {
 			if (nextProps.disabled || !nextProps.searchable) {
