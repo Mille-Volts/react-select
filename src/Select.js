@@ -670,10 +670,9 @@ const Select = React.createClass({
 				this.addValue(value);
 			});
 		} else {
-			let renderLabel = this.props.valueRenderer || this.getOptionLabel;
 			this.setState({
 				isOpen: false,
-				inputValue: value ? renderLabel(value) || '' : '',
+				inputValue: this.props.searchable && value ? (this.props.valueRenderer || this.getOptionLabel)(value) || '' : '',
 				isPseudoFocused: this.state.isFocused,
 			}, () => {
 				this.setValue(value);
