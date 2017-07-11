@@ -96,9 +96,9 @@ var Async = (function (_Component) {
 			}
 		}
 	}, {
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
-			if (nextProps.shouldReload(nextProps, this.props)) {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate(prevProps) {
+			if (this.props.shouldReload(this.props, prevProps)) {
 				this.loadOptions(this.inputValue());
 			}
 		}
@@ -1983,7 +1983,7 @@ var Select = _react2['default'].createClass({
 	renderValue: function renderValue(valueArray, isOpen) {
 		var _this5 = this;
 
-		if (!this.props.multi && !this.props.disabled && this.props.searchable) {
+		if (!this.props.multi && !this.props.disabled && this.props.searchable && this.state.inputValue) {
 			return null;
 		}
 
