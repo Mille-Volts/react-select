@@ -67,8 +67,8 @@ export default class Async extends Component {
 		}
 	}
 
-	componentWillReceiveProps (nextProps) {
-		if (nextProps.shouldReload(nextProps, this.props)) {
+	componentDidUpdate (prevProps) {
+		if (this.props.shouldReload(this.props, prevProps)) {
 			this.loadOptions(this.inputValue());
 		}
 	}
