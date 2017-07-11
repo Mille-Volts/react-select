@@ -1338,6 +1338,10 @@ var Select = _react2['default'].createClass({
 			}
 		}
 
+		if (this.props.searchable && !this.props.multi) {
+			this.setValue(this.getResetValue());
+		}
+
 		this.setState({
 			isOpen: true,
 			isPseudoFocused: false,
