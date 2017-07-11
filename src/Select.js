@@ -927,7 +927,7 @@ const Select = React.createClass({
 					aria-owns={isOpen ? this._instancePrefix + '-list' : this._instancePrefix + '-value'}
 					aria-activedescendant={isOpen ? this._instancePrefix + '-option-' + focusedOptionIndex : this._instancePrefix + '-value'}
 					className={className}
-					tabIndex={this.props.tabIndex || 0}
+					tabIndex={this.props.disabled ? undefined : this.props.tabIndex || 0}
 					onBlur={this.handleInputBlur}
 					onFocus={this.handleInputFocus}
 					ref={ref => this.input = ref}
