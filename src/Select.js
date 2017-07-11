@@ -206,6 +206,7 @@ const Select = React.createClass({
 				|| this.props.searchable != nextProps.searchable
 				|| this.props.multi != nextProps.multi
 				|| this.props.value != nextProps.value
+				|| this.props.options != nextProps.options
 			);
 
 		if (requireInputValueUpdate) {
