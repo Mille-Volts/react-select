@@ -845,7 +845,7 @@ const Select = React.createClass({
 	},
 
 	renderValue (valueArray, isOpen) {
-		if (!this.props.multi && !this.props.disabled && !this.props.searchable && (this.state.isFocused || this.state.isPseudoFocused)) {
+		if (!this.props.multi && !this.props.disabled && this.props.searchable) {
 			return null;
 		}
 
