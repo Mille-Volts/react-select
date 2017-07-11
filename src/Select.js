@@ -500,6 +500,10 @@ const Select = React.createClass({
 			}
 		}
 
+		if (this.props.searchable && !this.props.multi) {
+			this.setValue(this.getResetValue());
+		}
+
 		this.setState({
 			isOpen: true,
 			isPseudoFocused: false,
