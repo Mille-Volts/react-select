@@ -1980,7 +1980,7 @@ var Select = _react2['default'].createClass({
 	renderValue: function renderValue(valueArray, isOpen) {
 		var _this5 = this;
 
-		if (!this.props.multi && !this.props.disabled && !this.props.searchable && !this.state.isFocused && !this.state.isPseudoFocused) {
+		if (!this.props.multi && !this.props.disabled && !this.props.searchable && (this.state.isFocused || this.state.isPseudoFocused)) {
 			return null;
 		}
 
